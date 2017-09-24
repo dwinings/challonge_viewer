@@ -1,0 +1,34 @@
+.partContainer {
+    padding: 10px;
+    font-size: 18px;
+    font-family: sans-serif;
+    width: 100%;
+    border: solid lightgrey 1px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    clear: both;
+}
+
+.partName {
+    display: inline-block;
+    height: 52px;
+    vertical-align: middle;
+    line-height: 52px;
+}
+
+.partPlacing {
+    font-size: 52px;
+    display: inline-block;
+    float: left;
+    line-height: 52px;
+    padding-left: 15px;
+    height: 52px;
+}
+
+.partSeed {
+    display: inline-block;
+    font-size: 16px;
+    float: left;
+    margin-left: 5px;
+    margin-top: 30px;
+}
