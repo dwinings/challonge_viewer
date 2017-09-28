@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import Participant from "./Participant";
+import {challongeApiKey} from "./Creds";
+import {corsAnywherePrefix} from "./Utils";
 
 export default class ParticipantsView extends Component {
-    apiKey = 'nope';
-
     constructor(props) {
         super(props);
 
@@ -12,20 +12,17 @@ export default class ParticipantsView extends Component {
         };
 
         this.didFetchParticipants = false;
-        this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
         this.tourneyRequest = this.tourneyRequest.bind(this);
         this.participants = this.participants.bind(this);
     }
 
-    corsAnywherePrefix() {
-        return "https://cors-anywhere.herokuapp.com/";
-    }
 
     tourneyRequest() {
-        return `${this.corsAnywherePrefix()}https://api.challonge.com/v1/tournaments/${this.props.orgPrefix}${this.props.tourneyId}/participants.json?api_key=${this.apiKey}`
+        return `${corsAnywherePrefix()}https://api.challonge.com/v1/tournaments/${this.props.tourney}/participants.json?api_key=${challongeApiKey}`
     }
 
-    componentDidUpdate() {
+    componentWillMount() {
         const that = this;
         if (!that.didFetchParticipants) {
             that.didFetchParticipants = false;
@@ -63,7 +60,7 @@ export default class ParticipantsView extends Component {
             <div style={{width: '80%', margin: 'auto'}}>
                 {
                     this.participants().map((p) =>
-                        <Participant key={p.id} {...p} />
+                        <Participant key={p.id} {...p} tourney={this.props.tourney} />
                     )
                 }
             </div>

@@ -1,34 +1,34 @@
 .partContainer {
-    padding: 10px;
-    font-size: 18px;
-    font-family: sans-serif;
-    width: 100%;
     border: solid lightgrey 1px;
-    margin-bottom: 10px;
     border-radius: 4px;
     clear: both;
+    font-family: sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
 }
 
 .partName {
     display: inline-block;
     height: 52px;
-    vertical-align: middle;
     line-height: 52px;
+    vertical-align: middle;
 }
 
 .partPlacing {
-    font-size: 52px;
     display: inline-block;
     float: left;
+    font-size: 52px;
+    height: 52px;
     line-height: 52px;
     padding-left: 15px;
-    height: 52px;
 }
 
 .partSeed {
     display: inline-block;
-    font-size: 16px;
     float: left;
+    font-size: 16px;
     margin-left: 5px;
     margin-top: 30px;
 }

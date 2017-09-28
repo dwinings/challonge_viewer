@@ -1,11 +1,13 @@
-import React, { Component } from 'react'
-import './BracketInput.css'
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import './BracketInput.css';
+import {decodeChallongeUrl} from "./Utils";
 
 export default class BracketInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            bracketUrl: ""
+            url: ""
         };
 
         this.onClick = this.onClick.bind(this);
@@ -13,13 +15,17 @@ export default class BracketInput extends Component {
     }
 
     onClick() {
-        if (typeof this.props.onSubmit === "function") {
-            this.props.onSubmit(this.state.bracketUrl);
+        let tourney;
+        if (this.state.url !== null && (tourney = decodeChallongeUrl(this.state.url))) {
+            this.props.history.push(tourney);
+        } else {
+            // Show some error.
+            console.log("Yo that url is invalid.");
         }
     }
 
     onUrlChange(e) {
-        this.setState({bracketUrl: e.target.value})
+        this.setState({url: e.target.value})
     }
 
     render() {
