@@ -17,9 +17,9 @@ export default class BracketInput extends Component {
     onClick() {
         let tourney;
         if (this.state.url !== null && (tourney = decodeChallongeUrl(this.state.url))) {
-            this.props.history.push(tourney);
+            this.props.history.push(tourney + '/standings');
         } else {
-            // Show some error.
+            // TODO: Show some error.
             console.log("Yo that url is invalid.");
         }
     }
@@ -31,8 +31,10 @@ export default class BracketInput extends Component {
     render() {
         return (
             <div className="bracketContainer">
-                <input type="text" value={this.state.bracketUrl} onChange={this.onUrlChange} className="bracketInput" />
-                <div className="bracketSubmit" onClick={this.onClick}>Bracket URL</div>
+                <form onSubmit={this.onClick}>
+                    <input type="text" value={this.state.bracketUrl} onSubmit={this.onClick} onChange={this.onUrlChange} className="bracketInput" />
+                    <input type="submit" value="Bracket URL" className="bracketSubmit" />
+                </form>
             </div>
         )
     }

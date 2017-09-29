@@ -23,7 +23,7 @@ export function embedURIParams(uri, params) {
 
 const urlRegex = /.*\/\/(?:(.*).)?challonge.com\/(.*)\/?/;
 export function decodeChallongeUrl(url) {
-    let match = urlRegex.exec(this.state.url);
+    let match = urlRegex.exec(url);
     let orgPrefix = "";
     let tourneyId = null;
 
@@ -38,8 +38,9 @@ export function decodeChallongeUrl(url) {
     }
 }
 
-export function routeSplatter(container) {
+export function routeSplatter(container, more_args) {
+    more_args = more_args || {};
     return (props) => {
-        return React.createElement(container, props.match.params);
+        return React.createElement(container, Object.assign(more_args, props.match.params));
     };
 }
