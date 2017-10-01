@@ -33,7 +33,6 @@ export default class TournamentView extends Component {
     componentWillMount() {
         const that = this;
         if (!that.didFetchTourney) {
-            that.didFetchTourney = true;
             fetch(this.tourneyRequest(), {
                 headers: {
                     'Accept': 'application/json',
@@ -41,25 +40,34 @@ export default class TournamentView extends Component {
             }).then((resp) => {
                 return resp.json();
             }).then((json) => {
-                json.tournament.matches = json.tournament.matches.map((m) => {return m.match;});
-                json.tournament.participants = json.tournament.participants.map((p) => {return p.participant;});
-                that.setState((st) => {
-                    st.tourneyData = json.tournament;
+                let participants = json.tournament.participants.map((p) => {return p.participant;});
+                let matches = json.tournament.matches.map((m) => {return m.match;});
+                json.tournament.participants = {};
+                participants = this.participantsWithMatches(participants, matches);
+                participants.forEach((p) => {
+                    json.tournament.participants[p.id] = p;
                 });
-                that.didFetchTourney = true;
+
+                json.tournament.matches = {};
+                matches.forEach((m) => {
+                    m.player1 = m.player1_id ? json.tournament.participants[m.player1_id] : null;
+                    m.player2 = m.player2_id ? json.tournament.participants[m.player2_id] : null;
+                    json.tournament.matches[m.id] = m;
+                });
+
+
+                that.setState((st) => {
+                    st.tourneyData = json.tournament; that.didFetchTourney = true;});
             }).catch((e) => {
                 that.didFetchTourney = false;
             });
         }
     }
 
-    participantsWithMatches() {
-        if (!this.state.tourneyData) {return [];}
-        const that = this;
-
+    participantsWithMatches(participants, matches) {
         // Add each participants matches to them and then return sorted by placing.
-        const rval = that.state.tourneyData.participants.map((p) => {
-            p['matches'] = that.state.tourneyData.matches.filter((match) => {
+        const rval = participants.map((p) => {
+            p['matches'] = matches.filter((match) => {
                 return match.player1_id === p.id || match.player2_id === p.id;
             });
             return p;
@@ -73,11 +81,13 @@ export default class TournamentView extends Component {
 
     render() {
         return (
-            <div style={{paddingTop: '15px'}} >
+            <div style={{paddingTop: '15px', width: '80%', margin: 'auto'}} >
                 {   this.didFetchTourney &&
                     <Switch>
-                        <Route path="/:tourney/standings" component={routeSplatter(ParticipantsView, {participants: this.participantsWithMatches()})}/>
-                        <Route path="/:tourney/overview" component={routeSplatter(Overview, this.state.tourneyData)}/>
+                        <Route path="/:tourney/standings"
+                               component={routeSplatter(ParticipantsView, {participants: Object.values(this.state.tourneyData.participants)})}/>
+                        <Route path="/:tourney/overview"
+                               component={routeSplatter(Overview, this.state.tourneyData)}/>
                     </Switch>
                 }
             </div>
