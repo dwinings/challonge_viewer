@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import './BracketInput.css';
 import {decodeChallongeUrl} from "./Utils";
 
@@ -17,7 +16,7 @@ export default class BracketInput extends Component {
     onClick() {
         let tourney;
         if (this.state.url !== null && (tourney = decodeChallongeUrl(this.state.url))) {
-            this.props.history.push(tourney + '/standings');
+            this.props.router.push(tourney + '/standings');
         } else {
             // TODO: Show some error.
             console.log("Yo that url is invalid.");

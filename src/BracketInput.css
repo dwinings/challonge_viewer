@@ -14,11 +14,11 @@ input.bracketInput {
 input.bracketSubmit {
     background-color: lightgrey;
     border-radius: 4px;
+    cursor: pointer;
     display: inline-block;
     font-family: sans-serif;
     font-size: 24px;
     height: 52px;
-    line-height: 52px;
     overflow: hidden;
     padding: 0 20px;
     text-align: center;

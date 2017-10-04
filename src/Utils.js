@@ -1,9 +1,3 @@
-import React from 'react';
-
-export function corsAnywherePrefix() {
-    return "https://cors-anywhere.herokuapp.com/";
-}
-
 export function embedURIParams(uri, params) {
     let addedKey = false;
     for (let key in params) {
@@ -28,19 +22,12 @@ export function decodeChallongeUrl(url) {
     let tourneyId = null;
 
     if (match !== null) {
-        if (match[1].length > 0) {
+        if (match[1] && match[1].length > 0 && match[1] !== 'www') {
             orgPrefix = match[1] + "-";
         }
-        tourneyId = match[2]
+        tourneyId = match[2];
         return orgPrefix + tourneyId;
     } else {
         return null;
     }
-}
-
-export function routeSplatter(container, more_args) {
-    more_args = more_args || {};
-    return (props) => {
-        return React.createElement(container, Object.assign(more_args, props.match.params));
-    };
 }

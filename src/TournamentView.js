@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import {Switch, Route} from 'react-router-dom'
+import {Route, withRouter} from 'react-router'
 import ParticipantsView from "./ParticipantsView";
 import Overview from "./Overview";
 import {corsAnywherePrefix, embedURIParams, routeSplatter} from "./Utils";
-import {challongeApiKey} from "./Creds";
 
-export default class TournamentView extends Component {
+class TournamentView extends Component {
     constructor(props) {
         super(props);
 
@@ -16,18 +15,11 @@ export default class TournamentView extends Component {
         this.didFetchTourney = false;
         this.componentWillMount = this.componentWillMount.bind(this);
         this.tourneyRequest = this.tourneyRequest.bind(this);
+        this.augmentChildren = this.augmentChildren.bind(this);
     }
 
     tourneyRequest() {
-        const params = {
-            api_key: challongeApiKey,
-            include_matches: 1,
-            include_participants: 1
-        };
-        return embedURIParams(
-            `${corsAnywherePrefix()}https://api.challonge.com/v1/tournaments/${this.props.match.params.tourney}.json`,
-            params
-        );
+        return 'http://claustroful.space:9292/api/bracket/' + this.props.params.tourney;
     }
 
     componentWillMount() {
@@ -59,6 +51,8 @@ export default class TournamentView extends Component {
                 that.setState((st) => {
                     st.tourneyData = json.tournament; that.didFetchTourney = true;});
             }).catch((e) => {
+                console.log("Oi I died");
+                console.log(e);
                 that.didFetchTourney = false;
             });
         }
@@ -71,26 +65,27 @@ export default class TournamentView extends Component {
                 return match.player1_id === p.id || match.player2_id === p.id;
             });
             return p;
-        }).sort((l, r) => {
-            let lscore = l.final_rank || l.seed;
-            let rscore = r.final_rank || r.seed;
-            return lscore - rscore;
         });
         return rval;
     }
 
+    augmentChildren() {
+        if (!this.didFetchTourney) { return; }
+
+        let that = this;
+        return React.Children.map(this.props.children, child =>
+           React.cloneElement(child, that.state.tourneyData)
+        );
+    }
+
     render() {
+        this.augmentChildren();
         return (
             <div style={{paddingTop: '15px', width: '80%', margin: 'auto'}} >
-                {   this.didFetchTourney &&
-                    <Switch>
-                        <Route path="/:tourney/standings"
-                               component={routeSplatter(ParticipantsView, {participants: Object.values(this.state.tourneyData.participants)})}/>
-                        <Route path="/:tourney/overview"
-                               component={routeSplatter(Overview, this.state.tourneyData)}/>
-                    </Switch>
-                }
+                { this.didFetchTourney && this.augmentChildren() }
             </div>
         );
     }
 }
+
+export default withRouter(TournamentView);

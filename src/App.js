@@ -1,24 +1,25 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Router, Route, browserHistory, IndexRoute, Redirect, IndexRedirect} from 'react-router';
 import BracketInput from './BracketInput'
 import TournamentView from './TournamentView'
-import logo from './logo.svg';
+import Nav from "./Nav";
 import './App.css';
+import Overview from "./Overview";
+import ParticipantsView from "./ParticipantsView";
 
 class App extends Component {
     render() {
         return (
             <div className="App">
-                <div className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h2>Welcome to the challonge viewer.</h2>
-                </div>
-
-                <Router>
-                    <Switch>
-                        <Route path="/:tourney" component={TournamentView}/>
-                        <Route component={BracketInput} />
-                    </Switch>
+                <Router history={browserHistory}>
+                    <Route path="/" component={Nav}>
+                        <Route path=":tourney" component={TournamentView}>
+                            <Route path="overview" component={Overview} />
+                            <Route path="standings" component={ParticipantsView} />
+                            <IndexRedirect to="overview" />
+                        </Route>
+                        <IndexRoute component={BracketInput} />
+                    </Route>
                 </Router>
             </div>
         );
