@@ -13,6 +13,7 @@ class App extends Component {
             <div className="App">
                 <Router history={browserHistory}>
                     <Route path="/" component={Nav}>
+                        <Redirect from="null-tourney-pls" to="/" />
                         <Route path=":tourney" component={TournamentView}>
                             <Route path="overview" component={Overview} />
                             <Route path="standings" component={ParticipantsView} />

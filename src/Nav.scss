@@ -1,0 +1,50 @@
+@import "App";
+
+$nav_active: $light;
+$nav_inactive: $unlight;
+$nav_bg: $dark;
+$nav_height: 55px;
+$nav_fade: 10px;
+$inner_height: $nav_height - 15px;
+
+ul.nav {
+    display: flex;
+    flex-flow: row nowrap;
+    height: $nav_height;
+    background-color: $nav_bg;
+    align-items: flex-start;
+    color: white;
+    padding: 3px 0px;
+    width: 100%;
+    margin: 0px;
+    margin-bottom: -10px;
+    box-shadow: inset white 0px -25px $nav_fade $nav_fade*-1;
+}
+
+li.nav-el {
+    display: flex;
+    height: $inner_height;
+    align-items: center;
+    font-size: larger;
+    padding: 0 20px;
+}
+
+li.nav-el a {
+    color: $nav_inactive;
+    text-decoration: none;
+}
+
+li.nav-el a.active {
+    color: $nav_active;
+}
+
+.App-logo {
+    // animation: App-logo-spin infinite 20s linear;
+    display: inline-block;
+    width: $inner_height - 10px;
+}
+
+@keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

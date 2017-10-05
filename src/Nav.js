@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router';
+import {IndexLink, withRouter} from 'react-router';
 import logo from './logo.svg';
 import './Nav.css';
 
@@ -11,13 +11,13 @@ class Nav extends Component {
     standingsLink() {
         return this.tourney()
             ? '/' + this.tourney()  + '/standings'
-            : '/';
+            : '/null-tourney-pls';
     }
 
     overviewLink() {
         return this.tourney()
             ? '/' + this.tourney()  + '/overview'
-            : '/';
+            : '/null-tourney-pls';
     }
 
     render() {
@@ -30,16 +30,13 @@ class Nav extends Component {
                         </a>
                     </li>
                     <li className="nav-el">
-                        Challonge Bracket Viewer
+                        <IndexLink className="active" to="/">Challonge Bracket Viewer</IndexLink>
                     </li>
                     <li className="nav-el">
-                        <Link activeClassName="active" to="/" >Tourney</Link>
+                        <IndexLink activeClassName="active" to={this.overviewLink()}>Status</IndexLink>
                     </li>
                     <li className="nav-el">
-                        <Link activeClassName="active" to={this.overviewLink()}>Status</Link>
-                    </li>
-                    <li className="nav-el">
-                        <Link activeClassName="active" to={this.standingsLink()}>Standings</Link>
+                        <IndexLink activeClassName="active" to={this.standingsLink()}>Standings</IndexLink>
                     </li>
                 </ul>
 
